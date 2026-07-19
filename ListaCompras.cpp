@@ -41,7 +41,7 @@ int main(void) {
             indiceCliente = v_CodigosClientes.size();
             v_CodigosClientes.push_back(codigoCliente);
             i_Cliente[codigoCliente] = indiceCliente;
-            compras.push_back(list<int>());            
+            compras.push_back(list<int>()); // Como está "criando o cliente", cria-se o vetor de suas listas de produtos (um vetor de listas). Lista de Compras fig 4.
         } else {
             indiceCliente = i_Cliente.find(codigoCliente)->second; //ponteiro acessando um valor -nesse caso "int"- em map<string, int>
         }
@@ -55,10 +55,11 @@ int main(void) {
             indiceProduto = i_Produto.find(codigoProduto)->second;
         }
 
+        // Adiciona a lista de compras a cada indice do cliente (codigo local do cliente)
         compras[indiceCliente].push_back(indiceProduto);
     }
     
-    // TESTADOR
+    // TESTADOR AQUI
 
     fclose(arquivo);
     return 0;
