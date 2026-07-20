@@ -31,7 +31,7 @@ void lerArquivo(const char *caminho) {
     char header[51];
     fscanf(arquivo, "%50[^\n]\n", header);
 
-    while(fscanf(arquivo, "%d;%8[^;];%6[^;];%99[^\n]\n", &compra.date, compra.codClient, compra.codProduct, compra.nameProduct) == 4) {
+    while(fscanf(arquivo, "%d,%8[^,],%6[^,],%99[^\n]\n", &compra.date, compra.codClient, compra.codProduct, compra.nameProduct) == 4) {
         string codigoCliente = compra.codClient;
         string codigoProduto = compra.codProduct;
         string nomeProduto = compra.nameProduct;
