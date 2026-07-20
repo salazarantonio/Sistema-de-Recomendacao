@@ -4,7 +4,7 @@
 using namespace std;
 
 int main(void) {
-    int count = 1, nClientes = 3; // Quantos clientes testar
+    int count = 1; // Quantos clientes testar
     lerArquivo("dados/dados_venda_cluster_0.csv");
     
     cout << "Clientes carregados: " << v_CodigosClientes.size() << endl;
@@ -13,7 +13,7 @@ int main(void) {
 
 
     string codigoCliente;
-    while(cin >> codigoCliente && count < nClientes) {
+    while(cin >> codigoCliente && count < 3 /* Clientes a testar*/) {
         
         if (i_Cliente.find(codigoCliente) == i_Cliente.end()) {
             cout << "Cliente " << codigoCliente << " nao encontrado.\n";
