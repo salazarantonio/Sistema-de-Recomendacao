@@ -5,6 +5,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include "lista_compras.h"
 using namespace std;
 
 typedef struct {
@@ -14,17 +15,17 @@ typedef struct {
     char nameProduct[100];
 } Compra;   
 
-int main(void) {
-    FILE *arquivo = fopen("../dados/dados_venda_cluster_0.csv", "r");
-    Compra compra;
-    
-    vector<string> v_CodigosClientes;
-    vector<string> v_NomesProdutos;
-    vector<list<int>> compras;
-    map<string, int> i_Cliente;
-    map<string, int> i_Produto;
+vector<string> v_CodigosClientes;
+vector<string> v_NomesProdutos;
+vector<list<int>> compras;
+map<string, int> i_Cliente;
+map<string, int> i_Produto;
 
-    if(arquivo == NULL) {perror("Erro ao abrir arquivo"); return 1;}
+void lerArquivo(const char *caminho) {
+    FILE *arquivo = fopen(caminho, "r");
+    Compra compra;
+
+    if(arquivo == NULL) {perror("Erro ao abrir arquivo"); exit(1);}
 
     // Descartar cabeçalho
     char header[51];
@@ -41,7 +42,7 @@ int main(void) {
             indiceCliente = v_CodigosClientes.size();
             v_CodigosClientes.push_back(codigoCliente);
             i_Cliente[codigoCliente] = indiceCliente;
-            compras.push_back(list<int>()); // Como está "criando o cliente", cria-se o vetor de suas listas de produtos (um vetor de listas). Lista de Compras fig 4.
+            compras.push_back(list<int>()); // Como está "criando o cliente", cria-se o vetor de suas listas de produtos (um vetor de listas). Vito lista de compras fig 4.
         } else {
             indiceCliente = i_Cliente.find(codigoCliente)->second; //ponteiro acessando um valor -nesse caso "int"- em map<string, int>
         }
@@ -58,9 +59,6 @@ int main(void) {
         // Adiciona a lista de compras a cada indice do cliente (codigo local do cliente)
         compras[indiceCliente].push_back(indiceProduto);
     }
-    
-    // TESTADOR AQUI
 
     fclose(arquivo);
-    return 0;
 }
