@@ -1,51 +1,35 @@
 #ifndef SIMILARIDADE_H
 #define SIMILARIDADE_H
 
-/*
- * Modulo: Similaridade  (Atividade 2 - versao inicial)
- * -----------------------------------------------------
- * Calcula a matriz de similaridade entre clientes usando a distancia de
- * Jaccard descrita na Secao 2.2 do projeto:
- *
- *      S[i][j] = 1 - |P_i inter P_j| / |P_i|
- *
- * Nesta primeira versao (Atividade 2), a matriz de intersecao e obtida
- * transformando a lista de compras em uma matriz de compras DENSA
- * (A, n x m) e multiplicando-a pela sua transposta (I = A x A^T),
- * seguindo o algoritmo padrao de multiplicacao de matrizes.
- *
- * Toda a identificacao de clientes/produtos aqui e feita pelos indices
- * internos (nao pelos codigos originais da base de compras).
- */
-
 #include <vector>
-#include "lista_compras.h"
 
-struct Similaridade {
-    int numClientes;                              // n
-    std::vector<std::vector<double> > matrizS;    // matriz S, n x n (assimetrica)
-};
+// Struct que agrupa toda a informação da matriz de compras/similaridade.
+// Mantendo tudo dentro de uma única struct facilita passar/expor o "estado"
+// do módulo Similaridade sem espalhar variáveis soltas.
+typedef struct {
+    int nClientes;                              // n: numero de clientes
+    int nProdutos;                              // m: numero de produtos
+    std::vector<std::vector<int>> A;            // matriz de compras densa (n x m)
+    std::vector<std::vector<double>> S;         // matriz de similaridade (n x n)
+} MatrizSimilaridade;
 
-/*
- * Constroi a matriz de similaridade "sim" a partir dos dados ja
- * carregados em "lista" (modulo ListaCompras).
- */
-void construirSimilaridade(const ListaCompras &lista, Similaridade &sim);
+// Estado global do módulo (unico, assim como as estruturas de ListaCompras)
+extern MatrizSimilaridade matrizGlobal;
 
-/*
- * Retorna o valor S[i][j] da matriz de similaridade.
- */
-double obterSimilaridade(const Similaridade &sim, int i, int j);
+// Constroi a matriz de compras densa A (n x m) a partir das estruturas
+// preenchidas pelo módulo ListaCompras (v_CodigosClientes, v_NomesProdutos, compras).
+void construirMatrizCompras();
 
-/*
- * Encontra o cliente mais similar ao cliente de indice "indiceCliente",
- * excluindo o proprio cliente. "Mais similar" = menor valor de S[i][j]
- * (S e uma distancia: quanto menor, mais parecido). Clientes sem
- * nenhum produto em comum (S == 1) nao sao considerados vizinhos.
- *
- * Retorna o indice do cliente mais similar, ou -1 caso nao exista
- * nenhum cliente com pelo menos um produto em comum.
- */
-int clienteMaisSimilar(const Similaridade &sim, int indiceCliente);
+// Constroi a matriz de similaridade S (n x n) a partir da matriz de compras A,
+// calculando I = A x A^T e depois S[i][j] = 1 - I[i][j] / |P_i| (distancia de Jaccard).
+void construirMatrizSimilaridade();
 
-#endif /* SIMILARIDADE_H */
+// Retorna o valor de similaridade (distancia de Jaccard) entre os clientes de
+// indices internos i e j.
+double obterSimilaridade(int i, int j);
+
+// Dado um cliente de indice interno i, retorna o indice interno do cliente
+// mais similar a ele (excluindo ele mesmo). Retorna -1 se nao houver outro cliente.
+int clienteMaisSimilar(int i);
+
+#endif
