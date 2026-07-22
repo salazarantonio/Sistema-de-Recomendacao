@@ -6,11 +6,11 @@
 #include <vector>
 #include <map>
 
-extern std::vector<std::string> v_CodigosClientes;
-extern std::vector<std::string> v_NomesProdutos;
-extern std::vector<std::list<int>> compras;
-extern std::map<std::string, int> i_Cliente;
-extern std::map<std::string, int> i_Produto;
+extern std::vector<std::string> vetorClientes;
+extern std::vector<std::string> nomesProdutos;
+extern std::vector<std::list<int>> listaCompras;
+extern std::map<std::string, int> mapaCliente;
+extern std::map<std::string, int> mapaProduto;
 
 void lerArquivo(const char *caminho);
 
