@@ -13,13 +13,13 @@ typedef struct {
     char codClient[9];
     char codProduct[7];
     char nameProduct[100];
-} Compra;   
+} Compra;
 
-vector<string> v_CodigosClientes;
-vector<string> v_NomesProdutos;
-vector<list<int>> compras;
-map<string, int> i_Cliente;
-map<string, int> i_Produto;
+vector<string> vetorClientes;
+vector<string> nomesProdutos;
+vector<list<int>> listaCompras;
+map<string, int> mapaCliente;
+map<string, int> mapaProduto;
 
 void lerArquivo(const char *caminho) {
     FILE *arquivo = fopen(caminho, "r");
@@ -32,32 +32,33 @@ void lerArquivo(const char *caminho) {
     fscanf(arquivo, "%50[^\n]\n", header);
 
     while(fscanf(arquivo, "%d,%8[^,],%6[^,],%99[^\n]\n", &compra.date, compra.codClient, compra.codProduct, compra.nameProduct) == 4) {
+
         string codigoCliente = compra.codClient;
         string codigoProduto = compra.codProduct;
         string nomeProduto = compra.nameProduct;
 
         // Verfica se indice do cliente NAO existe no local (adiciona no vetor e no map. Existindo, acessa o valor dentro de map). Se dá o mesmo para os produtos
         int indiceCliente;
-        if(i_Cliente.find(codigoCliente) == i_Cliente.end()) {
-            indiceCliente = v_CodigosClientes.size();
-            v_CodigosClientes.push_back(codigoCliente);
-            i_Cliente[codigoCliente] = indiceCliente;
-            compras.push_back(list<int>()); // Como está "criando o cliente", cria-se o vetor de suas listas de produtos (um vetor de listas). Vito lista de compras fig 4.
+        if(mapaCliente.find(codigoCliente) == mapaCliente.end()) {
+            indiceCliente = vetorClientes.size();
+            vetorClientes.push_back(codigoCliente);
+            mapaCliente[codigoCliente] = indiceCliente;
+            listaCompras.push_back(list<int>()); // Como está "criando o cliente", cria-se o vetor de suas listas de produtos (um vetor de listas). Vito lista de compras fig 4.
         } else {
-            indiceCliente = i_Cliente.find(codigoCliente)->second; //ponteiro acessando um valor -nesse caso "int"- em map<string, int>
+            indiceCliente = mapaCliente.find(codigoCliente)->second;
         }
 
         int indiceProduto;
-        if(i_Produto.find(codigoProduto) == i_Produto.end()) {
-            indiceProduto = v_NomesProdutos.size();
-            v_NomesProdutos.push_back(nomeProduto);
-            i_Produto[codigoProduto] = indiceProduto;
+        if(mapaProduto.find(codigoProduto) == mapaProduto.end()) {
+            indiceProduto = nomesProdutos.size();
+            nomesProdutos.push_back(nomeProduto);
+            mapaProduto[codigoProduto] = indiceProduto;
         } else {
-            indiceProduto = i_Produto.find(codigoProduto)->second;
+            indiceProduto = mapaProduto.find(codigoProduto)->second;
         }
 
         // Adiciona a lista de compras a cada indice do cliente (codigo local do cliente)
-        compras[indiceCliente].push_back(indiceProduto);
+        listaCompras[indiceCliente].push_back(indiceProduto);
     }
 
     fclose(arquivo);
