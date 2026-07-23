@@ -4,9 +4,9 @@
 #include "similaridade.h"
 using namespace std;
 
-int main(void) {
+int main(int argc, char **argv) {
     int count = 0;
-    lerArquivo("dados/dados_venda_cluster_17.csv");
+    lerArquivo(argv[1]);
 
     construirMatrizCompras();
     construirMatrizSimilaridade();

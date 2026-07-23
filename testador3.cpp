@@ -5,8 +5,8 @@
 #include "recomendacao.h"
 using namespace std;
 
-int main(void) {
-    lerArquivo("dados/dados_venda_cluster_17.csv");
+int main(int argc, char **argv) {
+    lerArquivo(argv[1]);
 
     construirMatrizCompras();
     construirMatrizSimilaridade();
