@@ -6,16 +6,21 @@
 using namespace std;
 
 int main(int argc, char **argv) {
+    int count = 0;
+    if (argc < 2) {
+        cout << "Use o comando: " << argv[0] << " dados/dados_venda_cluster_X.csv" << endl;
+        return 1;
+    }
     lerArquivo(argv[1]);
 
-    construirMatrizCompras();
-    construirMatrizSimilaridade();
+    MatrizSimilaridade matriz;
+    construirMatrizCompras(&matriz);
+    construirMatrizSimilaridade(&matriz);
 
     cout << "\nClientes carregados: " << vetorClientes.size() << endl;
     cout << "Produtos carregados: " << nomesProdutos.size() << endl;
 
     int k = 5; // numero de produtos recomendados por cliente
-    int count = 0;
 
     cout << "\nDigite o codigo original de um cliente: " << endl;
 
@@ -25,7 +30,7 @@ int main(int argc, char **argv) {
             cout << "Cliente " << codigoCliente << " nao encontrado.\n" << endl;
         } else {
             int idCliente = mapaCliente.find(codigoCliente)->second;
-            vector<ProdutoRank> recomendados = recomendarProdutos(idCliente, k);
+            vector<ProdutoRank> recomendados = recomendarProdutos(&matriz, idCliente, k);
 
             cout << "Top " << k << " produtos recomendados para o cliente "
                  << codigoCliente << ":\n" << endl;

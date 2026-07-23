@@ -2,6 +2,7 @@
 #define RECOMENDACAO_H
 
 #include <vector>
+#include "similaridade.h"
 
 // Struct que representa uma entrada do vetor de ranqueamento de um cliente:
 // o identificador interno do produto e o valor de ranqueamento calculado.
@@ -17,6 +18,6 @@ typedef struct {
 //   3) Atualizacao do ranqueamento multiplicando pela similaridade do vizinho;
 //   4) Ordenacao nao-decrescente e selecao dos k primeiros.
 // Produtos ja comprados pelo cliente sao excluidos do resultado.
-std::vector<ProdutoRank> recomendarProdutos(int idCliente, int k);
+std::vector<ProdutoRank> recomendarProdutos(MatrizSimilaridade *matriz, int idCliente, int k);
 
 #endif

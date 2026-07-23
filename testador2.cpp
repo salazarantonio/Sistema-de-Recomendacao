@@ -4,12 +4,19 @@
 #include "similaridade.h"
 using namespace std;
 
+// g++ lista_compras.cpp testador2.cpp similaridade.cpp -o testador2; ./testador2.exe dados/dados_venda_cluster_17.csv
+
 int main(int argc, char **argv) {
     int count = 0;
+    if (argc < 2) {
+        cout << "Use o comando: " << argv[0] << " dados/dados_venda_cluster_X.csv" << endl;
+        return 1;
+    }
     lerArquivo(argv[1]);
 
-    construirMatrizCompras();
-    construirMatrizSimilaridade();
+    MatrizSimilaridade matriz;
+    construirMatrizCompras(&matriz);
+    construirMatrizSimilaridade(&matriz);
 
     cout << "\nClientes carregados: " << vetorClientes.size() << endl;
     cout << "Produtos carregados: " << nomesProdutos.size() << endl;
@@ -21,7 +28,7 @@ int main(int argc, char **argv) {
             cout << "Cliente " << codigoCliente << " nao encontrado.\n" << endl;
         } else {
             int indiceCliente = mapaCliente.find(codigoCliente)->second;
-            int maisSimilar = clienteMaisSimilar(indiceCliente);
+            int maisSimilar = clienteMaisSimilar(&matriz, indiceCliente);
 
             if (maisSimilar == -1) {
                 cout << "Nao ha outro cliente na base para comparar.\n" << endl;
@@ -31,7 +38,7 @@ int main(int argc, char **argv) {
                 cout << "Cliente mais similar: codigo " << vetorClientes[maisSimilar]
                      << " (indice interno " << maisSimilar << ")" << endl;
                 cout << "Valor de similaridade (distancia de Jaccard): "
-                     << obterSimilaridade(indiceCliente, maisSimilar) << endl;
+                     << obterSimilaridade(&matriz, indiceCliente, maisSimilar) << endl;
             }
         }
         count++;
@@ -40,6 +47,7 @@ int main(int argc, char **argv) {
         }
     }
 
+    liberar(&matriz);
     cout << "\nEncerrando programa.\n" << endl;
     return 0;
 }
