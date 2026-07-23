@@ -20,7 +20,6 @@ void construirMatrizCompras(MatrizSimilaridade *matriz) {
         }
     }
 
-
     // Para cada cliente, marca com 1 as posicoes dos produtos que ele comprou
     for (i = 0; i < n; i++) {
         for (int idProduto : listaCompras[i]) {
@@ -30,7 +29,6 @@ void construirMatrizCompras(MatrizSimilaridade *matriz) {
 }
 
 void construirMatrizSimilaridade(MatrizSimilaridade *matriz) {
-    int i, j, k;
     int n = matriz->numeroClientes;
     int m = matriz->numeroProdutos;
 
@@ -40,10 +38,10 @@ void construirMatrizSimilaridade(MatrizSimilaridade *matriz) {
     }
 
     // Matriz de intersecao I = A x A^T (Algoritmo de Multiplicacao de Matrizes Padrao)
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             int soma = 0;
-            for (k = 0; k < m; k++) {
+            for (int k = 0; k < m; k++) {
                 // A^T[k][j] = A[j][k], entao I[i][j] = soma_k A[i][k] * A[j][k]
                 soma += matriz->A[i][k] * matriz->A[j][k];
             }
@@ -53,27 +51,25 @@ void construirMatrizSimilaridade(MatrizSimilaridade *matriz) {
 
     // Constroi a matriz de similaridade final: S[i][j] = 1 - I[i][j] / |P_i|
     matriz->S = (double**) malloc(n * sizeof(double*));
-    for (i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         matriz->S[i] = (double*) malloc(n * sizeof(double));
     }
 
     for (int i = 0; i < n; i++) {
         int tamanhoPi = listaCompras[i].size();
         for (int j = 0; j < n; j++) {
-            int tamanhoPj = listaCompras[j].size();
-            int uniao = tamanhoPi + tamanhoPj - I[i][j]; // |A U B| = |A| + |B| - |A inter B|
             if (i == j) {
-                matriz->S[i][j] = 0.0; // cliente e identico a ele mesmo
-            } else if (uniao == 0) {
+                matriz->S[i][j] = 0.0; // cliente é identico a ele mesmo
+            } else if (tamanhoPi == 0) {
                 // Cliente sem compras: nao ha base de comparacao, considera-se
                 // totalmente dissimilar para nao gerar divisao por zero.
                 matriz->S[i][j] = 1.0;
             } else {
-                matriz->S[i][j] = 1.0 - (double)I[i][j] / (double)uniao;
+                matriz->S[i][j] = 1.0 - (double)I[i][j] / (double)tamanhoPi;
             }
         }
     }
-
+    
     for (int i = 0; i < n; i++) free(I[i]);
     free(I);
 }
