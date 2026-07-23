@@ -11,8 +11,8 @@ int main(void) {
     construirMatrizCompras();
     construirMatrizSimilaridade();
 
-    cout << "\nClientes carregados: " << v_CodigosClientes.size() << endl;
-    cout << "Produtos carregados: " << v_NomesProdutos.size() << endl;
+    cout << "\nClientes carregados: " << vetorClientes.size() << endl;
+    cout << "Produtos carregados: " << nomesProdutos.size() << endl;
 
     int k = 5; // numero de produtos recomendados por cliente
     int count = 0;
@@ -21,10 +21,10 @@ int main(void) {
 
     string codigoCliente;
     while (count < 3 && cin >> codigoCliente) {
-        if (i_Cliente.find(codigoCliente) == i_Cliente.end()) {
+        if (mapaCliente.find(codigoCliente) == mapaCliente.end()) {
             cout << "Cliente " << codigoCliente << " nao encontrado.\n" << endl;
         } else {
-            int idCliente = i_Cliente.find(codigoCliente)->second;
+            int idCliente = mapaCliente.find(codigoCliente)->second;
             vector<ProdutoRank> recomendados = recomendarProdutos(idCliente, k);
 
             cout << "Top " << k << " produtos recomendados para o cliente "
@@ -34,7 +34,7 @@ int main(void) {
                 cout << " (nenhum produto disponivel para recomendar)" << endl;
             } else {
                 for (const ProdutoRank &pr : recomendados) {
-                    cout << " - " << v_NomesProdutos[pr.idProduto]
+                    cout << " - " << nomesProdutos[pr.idProduto]
                          << " (ranking: " << pr.ranking << ")" << endl;
                 }
             }

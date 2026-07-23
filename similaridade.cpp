@@ -7,26 +7,26 @@ using namespace std;
 MatrizSimilaridade matrizGlobal;
 
 void construirMatrizCompras() {
-    int n = v_CodigosClientes.size();
-    int m = v_NomesProdutos.size();
+    int n = vetorClientes.size();
+    int m = nomesProdutos.size();
 
-    matrizGlobal.nClientes = n;
-    matrizGlobal.nProdutos = m;
+    matrizGlobal.numeroClientes = n;
+    matrizGlobal.numeroProdutos = m;
 
     // Aloca a matriz densa n x m inicializada com 0
     matrizGlobal.A.assign(n, vector<int>(m, 0));
 
     // Para cada cliente, marca com 1 as posicoes dos produtos que ele comprou
     for (int i = 0; i < n; i++) {
-        for (int idProduto : compras[i]) {
+        for (int idProduto : listaCompras[i]) {
             matrizGlobal.A[i][idProduto] = 1;
         }
     }
 }
 
 void construirMatrizSimilaridade() {
-    int n = matrizGlobal.nClientes;
-    int m = matrizGlobal.nProdutos;
+    int n = matrizGlobal.numeroClientes;
+    int m = matrizGlobal.numeroProdutos;
 
     // Matriz de intersecao I = A x A^T (Algoritmo de Multiplicacao de Matrizes Padrao)
     vector<vector<int>> I(n, vector<int>(n, 0));
@@ -46,7 +46,7 @@ void construirMatrizSimilaridade() {
     matrizGlobal.S.assign(n, vector<double>(n, 0.0));
 
     for (int i = 0; i < n; i++) {
-        int tamanhoPi = compras[i].size(); // |P_i|
+        int tamanhoPi = listaCompras[i].size(); // |P_i|
         for (int j = 0; j < n; j++) {
             if (i == j) {
                 matrizGlobal.S[i][j] = 0.0; // cliente e identico a ele mesmo
@@ -66,7 +66,7 @@ double obterSimilaridade(int i, int j) {
 }
 
 int clienteMaisSimilar(int i) {
-    int n = matrizGlobal.nClientes;
+    int n = matrizGlobal.numeroClientes;
     int melhorIndice = -1;
     double melhorValor = 2.0; // maior que qualquer valor possivel de s(i,j), que fica em [0,1]
 

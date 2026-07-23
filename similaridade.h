@@ -7,8 +7,8 @@
 // Mantendo tudo dentro de uma única struct facilita passar/expor o "estado"
 // do módulo Similaridade sem espalhar variáveis soltas.
 typedef struct {
-    int nClientes;                              // n: numero de clientes
-    int nProdutos;                              // m: numero de produtos
+    int numeroClientes;                              // n: numero de clientes
+    int numeroProdutos;                              // m: numero de produtos
     std::vector<std::vector<int>> A;            // matriz de compras densa (n x m)
     std::vector<std::vector<double>> S;         // matriz de similaridade (n x n)
 } MatrizSimilaridade;

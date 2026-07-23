@@ -6,12 +6,12 @@
 using namespace std;
 
 vector<ProdutoRank> recomendarProdutos(int idCliente, int k) {
-    int n = matrizGlobal.nClientes;
-    int m = matrizGlobal.nProdutos;
+    int n = matrizGlobal.numeroClientes;
+    int m = matrizGlobal.numeroProdutos;
 
     // Marca quais produtos ja foram comprados pelo cliente c
     vector<bool> compradoPorC(m, false);
-    for (int idProduto : compras[idCliente]) {
+    for (int idProduto : listaCompras[idCliente]) {
         compradoPorC[idProduto] = true;
     }
 
@@ -25,7 +25,7 @@ vector<ProdutoRank> recomendarProdutos(int idCliente, int k) {
         double similaridade = obterSimilaridade(idCliente, s);
         if (similaridade >= 1.0) continue; // vizinho totalmente dissimilar, ignora
 
-        for (int p : compras[s]) {
+        for (int p : listaCompras[s]) {
             if (!compradoPorC[p]) {
                 R[p] *= similaridade;
             }

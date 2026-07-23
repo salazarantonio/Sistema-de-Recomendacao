@@ -11,16 +11,16 @@ int main(void) {
     construirMatrizCompras();
     construirMatrizSimilaridade();
 
-    cout << "\nClientes carregados: " << v_CodigosClientes.size() << endl;
-    cout << "Produtos carregados: " << v_NomesProdutos.size() << endl;
+    cout << "\nClientes carregados: " << vetorClientes.size() << endl;
+    cout << "Produtos carregados: " << nomesProdutos.size() << endl;
     cout << "Digite o codigo original de um cliente: " << endl;
 
     string codigoCliente;
     while (count < 3 && cin >> codigoCliente /* Clientes a testar*/) {
-        if (i_Cliente.find(codigoCliente) == i_Cliente.end()) {
+        if (mapaCliente.find(codigoCliente) == mapaCliente.end()) {
             cout << "Cliente " << codigoCliente << " nao encontrado.\n" << endl;
         } else {
-            int indiceCliente = i_Cliente.find(codigoCliente)->second;
+            int indiceCliente = mapaCliente.find(codigoCliente)->second;
             int maisSimilar = clienteMaisSimilar(indiceCliente);
 
             if (maisSimilar == -1) {
@@ -28,7 +28,7 @@ int main(void) {
             } else {
                 cout << "Cliente " << codigoCliente
                      << " (indice interno " << indiceCliente << ")" << endl;
-                cout << "Cliente mais similar: codigo " << v_CodigosClientes[maisSimilar]
+                cout << "Cliente mais similar: codigo " << vetorClientes[maisSimilar]
                      << " (indice interno " << maisSimilar << ")" << endl;
                 cout << "Valor de similaridade (distancia de Jaccard): "
                      << obterSimilaridade(indiceCliente, maisSimilar) << endl;
