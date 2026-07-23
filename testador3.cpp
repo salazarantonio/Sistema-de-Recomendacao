@@ -5,6 +5,8 @@
 #include "recomendacao.h"
 using namespace std;
 
+// g++ lista_compras.cpp testador3.cpp similaridade.cpp recomendacao.cpp -o testador; ./testador.exe dados/dados_venda_cluster_17.csv
+
 int main(int argc, char **argv) {
     int count = 0;
     if (argc < 2) {
