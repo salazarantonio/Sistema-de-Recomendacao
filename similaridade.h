@@ -17,7 +17,7 @@ void construirMatrizCompras(MatrizSimilaridade *matriz);
 
 // Constroi a matriz de similaridade S (n x n) a partir da matriz de compras A,
 // calculando I = A x A^T e depois S[i][j] = 1 - I[i][j] / |P_i| (distancia de Jaccard).
-void construirMatrizSimilaridade(MatrizSimilaridade *matriz);
+void construirMatrizSimilaridade(MatrizSimilaridade *matriz, bool novoAlgoritmo = true);
 
 // Retorna o valor de similaridade (distancia de Jaccard) entre os clientes de
 // indices internos i e j.

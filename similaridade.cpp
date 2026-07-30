@@ -11,6 +11,7 @@ void construirMatrizCompras(MatrizSimilaridade *matriz) {
     matriz->numeroClientes = n;
     matriz->numeroProdutos = m;
 
+    matriz-> S = NULL;
     // Aloca a matriz densa n x m inicializada com 0
     matriz->A = (int**) malloc(n * sizeof(int*));
     for (i = 0; i < n; i++) {
@@ -19,7 +20,6 @@ void construirMatrizCompras(MatrizSimilaridade *matriz) {
             matriz->A[i][j] = 0;
         }
     }
-
     // Para cada cliente, marca com 1 as posicoes dos produtos que ele comprou
     for (i = 0; i < n; i++) {
         for (int idProduto : listaCompras[i]) {
@@ -28,50 +28,94 @@ void construirMatrizCompras(MatrizSimilaridade *matriz) {
     }
 }
 
-void construirMatrizSimilaridade(MatrizSimilaridade *matriz) {
-    int n = matriz->numeroClientes;
-    int m = matriz->numeroProdutos;
-
-    int **I = (int**) malloc(n * sizeof(int*));
-    for (int i = 0; i < n; i++) {
-        I[i] = (int*) malloc(n * sizeof(int));
+int** construirTransposta(int **A, int n, int m) {
+    // AT tem dimensao m x n
+    int **At = (int**) malloc(m * sizeof(int*));
+    for (int k = 0; k < m; k++) {
+        At[k] = (int*) malloc(n * sizeof(int));
+        for (int i = 0; i < n; i++) {
+            At[k][i] = A[i][k];
+        }
     }
+    return At;
+}
 
-    // Matriz de intersecao I = A x A^T (Algoritmo de Multiplicacao de Matrizes Padrao)
+// Matriz de intersecao I = A x A^T (Algoritmo de Multiplicacao de Matrizes Padrao)
+int** multiplicaMatrizes(int **A, int n, int m) {
+    int **At = construirTransposta(A, n, m);
+
+    int **C = (int**) malloc(n * sizeof(int*));
     for (int i = 0; i < n; i++) {
+        C[i] = (int*) malloc(n * sizeof(int));
         for (int j = 0; j < n; j++) {
             int soma = 0;
             for (int k = 0; k < m; k++) {
                 // A^T[k][j] = A[j][k], entao I[i][j] = soma_k A[i][k] * A[j][k]
-                soma += matriz->A[i][k] * matriz->A[j][k];
+                soma += A[i][k] * At[k][j];
             }
-            I[i][j] = soma;
+            C[i][j] = soma;
         }
     }
 
-    // Constroi a matriz de similaridade final: S[i][j] = 1 - I[i][j] / |P_i|
-    matriz->S = (double**) malloc(n * sizeof(double*));
+    for (int k = 0; k < m; k++) {free(At[k]);}
+    free(At);
+
+    return C;
+}
+
+int** multiplica_por_transposta(int **A, int n, int m) { // Atv 4
+    int **C = (int**) malloc(n * sizeof(int*));
     for (int i = 0; i < n; i++) {
-        matriz->S[i] = (double*) malloc(n * sizeof(double));
+        C[i] = (int*) malloc(n * sizeof(int));
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i; j < n; j++) {
+            int soma = 0;
+            for (int k = 0; k < m; k++) {
+                soma += A[i][k] * A[j][k];
+            }
+            C[i][j] = soma;
+            C[j][i] = soma; // espelhamento por conta da simetria i
+        }
+    }
+    return C;
+}
+
+void calcularMatrizSimilaridade(MatrizSimilaridade *matriz, int **C) {
+    int n = matriz->numeroClientes;
+
+    if (matriz->S == NULL) {
+        matriz->S = (double**) malloc(n * sizeof(double*));
+        for (int i = 0; i < n; i++) {
+            matriz->S[i] = (double*) malloc(n * sizeof(double));
+        }
     }
 
     for (int i = 0; i < n; i++) {
         int tamanhoPi = listaCompras[i].size();
         for (int j = 0; j < n; j++) {
             if (i == j) {
-                matriz->S[i][j] = 0.0; // cliente é identico a ele mesmo
+                matriz->S[i][j] = 0.0; // cliente e' identico a ele mesmo
             } else if (tamanhoPi == 0) {
-                // Cliente sem compras: nao ha base de comparacao, considera-se
-                // totalmente dissimilar para nao gerar divisao por zero.
-                matriz->S[i][j] = 1.0;
+                matriz->S[i][j] = 1.0; // Cliente sem compras: nao ha base de comparacao, considera-se totalmente dissimilar para nao gerar divisao por zero.
             } else {
-                matriz->S[i][j] = 1.0 - (double)I[i][j] / (double)tamanhoPi;
+                matriz->S[i][j] = 1.0 - (double)C[i][j] / (double)tamanhoPi;
             }
         }
     }
+}
     
-    for (int i = 0; i < n; i++) free(I[i]);
-    free(I);
+void construirMatrizSimilaridade(MatrizSimilaridade *matriz, bool novoAlgoritmo) {
+    int n = matriz->numeroClientes;
+    int m = matriz->numeroProdutos;
+
+    int **C = novoAlgoritmo ? multiplica_por_transposta(matriz->A, n, m) : multiplicaMatrizes(matriz->A, n, m);
+
+    calcularMatrizSimilaridade(matriz, C);
+
+    for (int i = 0; i < n; i++) {free(C[i]);}
+    free(C);
 }
 
 double obterSimilaridade(MatrizSimilaridade *matriz, int i, int j) {
