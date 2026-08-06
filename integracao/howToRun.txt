@@ -1,0 +1,13 @@
+Ferramenta necessária: Microsoft C++ Build Tools. -> "Desenvolvimento para desktop com C++"
+NEED PYTHON >= 3.13 from python.org
+pip install pybind11 setuptools wheel
+
+--------------------------------------------------------------------------------------------------
+
+x64 Native Tools Command Prompt for VS
+
+cd "C:\Users\antsa\Documents\Coding\"Sistema de Recomendação"\integracao
+python setup.py build_ext --inplace
+python testador_python.py ../dados/dados_venda_cluster_17.csv
+
+--------------------------------------------------------------------------------------------------

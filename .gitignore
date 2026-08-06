@@ -1,6 +1,11 @@
-dados/
+dados/dados_venda_cluster_0.csv
 output/
-testador.exe
-testador1.exe
-testador2.exe
-testador3.exe
+1a5/testador.exe
+1a5/testador1.exe
+1a5/testador2.exe
+1a5/testador3.exe
+1a5/testador4.exe
+1a5/Atividade5/testador5.exe
+integracao/build/lib.win-amd64-cpython-314/
+integracao/build/temp.win-amd64-cpython-314/
+integracao/meu_solver.cp314-win_amd64.pyd

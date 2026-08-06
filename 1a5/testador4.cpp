@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// g++ lista_compras.cpp testador4_completo.cpp similaridade.cpp -o testador4; /testador4 dados/dados_venda_cluster_17.csv
+// g++ lista_compras.cpp testador4_completo.cpp similaridade.cpp -o testador4; ./testador4 dados/dados_venda_cluster_7.csv
 
 int main(int argc, char **argv) {
     if (argc < 2) {
