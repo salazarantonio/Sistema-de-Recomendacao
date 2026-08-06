@@ -92,4 +92,5 @@ O desenvolvimento foi dividido em seis módulos:
 
 [Licença](LICENSE)
 
+##
 Projeto acadêmico desenvolvido para a disciplina de Programação Estruturada - UFPB 2026.1
