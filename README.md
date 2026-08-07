@@ -1,6 +1,6 @@
 # Sistema de Recomendação
 
-Implementação de um sistema de recomendação para clientes de lojas de varejo utilizando filtragem colaborativa baseada em usuários e similaridade de Jaccard. O projeto foi desenvolvido em C++ como parte da disciplina de Programação Estruturada. :contentReference[oaicite:0]{index=0}
+Implementação de um sistema de recomendação para clientes de lojas de varejo utilizando filtragem colaborativa baseada em usuários e similaridade de Jaccard. O projeto foi desenvolvido em C++ como parte da disciplina de Programação Estruturada.
 
 ## Funcionalidades
 
