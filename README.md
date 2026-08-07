@@ -36,7 +36,7 @@ Implementação de um sistema de recomendação para clientes de lojas de varejo
 [RUN](integracao/howToRun.txt)
 ## 
 
-## Clonar a branch `salazarismo`
+## Clonar repositório
 
 ```bash
 git clone --branch salazarismo --single-branch https://github.com/main/Sistema-de-Recomendacao.git
