@@ -11,7 +11,7 @@ Implementação de um sistema de recomendação para clientes de lojas de varejo
 - Recomendação de produtos utilizando o método da vizinhança.
 - Multiplicação de matrizes otimizada.
 - Implementação utilizando matrizes esparsas (CSR).
-- Integração dos módulos C++ com Python utilizando pybind11. :contentReference[oaicite:1]{index=1} :contentReference[oaicite:2]{index=2} :contentReference[oaicite:3]{index=3} :contentReference[oaicite:4]{index=4}
+- Integração dos módulos C++ com Python utilizando pybind11.
 
 ## Estrutura
 
@@ -58,7 +58,7 @@ O sistema utiliza filtragem colaborativa baseada em usuários.
 3. Computa a similaridade de Jaccard.
 4. Ordena os vizinhos mais similares.
 5. Ranqueia os produtos ainda não adquiridos pelo cliente.
-6. Retorna os `k` produtos mais recomendados. :contentReference[oaicite:5]{index=5}
+6. Retorna os `k` produtos mais recomendados.
 
 ## Projeto
 
@@ -69,7 +69,7 @@ O desenvolvimento foi dividido em seis módulos:
 - Recomendação
 - Multiplicação eficiente
 - Matrizes esparsas (CSR)
-- Integração C++/Python com pybind11 :contentReference[oaicite:6]{index=6}
+- Integração C++/Python com pybind11
 
 ## Licença
 
